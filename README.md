@@ -112,19 +112,19 @@ Your job should look like this:
 # Executes the bucket.yml - Deploy an S3 bucket, and interface with that bucket to synchronize the files between local and the bucket.
 # Note that the `--parameter-overrides` let you specify a value that override parameter value in the bucket.yml template file.
 create_and_deploy_front_end:
-  docker:
-  - image: amazon/aws-cli
-  steps:
-  - checkout
-  - run:
-      name: Execute bucket.yml - Create Cloudformation Stack
-      command: |
-        aws cloudformation deploy \
-        --template-file bucket.yml \
-        --stack-name stack-create-bucket-${CIRCLE_WORKFLOW_ID:0:7} \
-        --parameter-overrides MyBucketName="mybucket-${CIRCLE_WORKFLOW_ID:0:7}"
-  # Uncomment the step below if yoou wish to upload all contents of the current directory to the S3 bucket
-  - run: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Execute bucket.yml - Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+            --template-file bucket.yml \
+            --stack-name stack-create-bucket-${CIRCLE_WORKFLOW_ID:0:7} \
+            --parameter-overrides MyBucketName="mybucket-${CIRCLE_WORKFLOW_ID:0:7}"
+      # Uncomment the step below if yoou wish to upload all contents of the current directory to the S3 bucket
+      #- run: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
 ``` 
 
 > Notice we are passing in the CIRCLE_WORKFLOW_ID in mybucket-${CIRCLE_WORKFLOW_ID:0:7} to help form the name of our new bucket. This helps us to reference the bucket later, in another job/command.
