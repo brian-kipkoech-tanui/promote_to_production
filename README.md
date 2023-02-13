@@ -118,7 +118,7 @@ create_and_deploy_front_end:
             --stack-name stack-create-bucket-${CIRCLE_WORKFLOW_ID:0:7} \
             --parameter-overrides MyBucketName="mybucket-${CIRCLE_WORKFLOW_ID:0:7}"
       # Uncomment the step below if yoou wish to upload all contents of the current directory to the S3 bucket
-      #- run: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
+      - run: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
 ``` 
 
 > Notice we are passing in the CIRCLE_WORKFLOW_ID in mybucket-${CIRCLE_WORKFLOW_ID:0:7} to help form the name of our new bucket. This helps us to reference the bucket later, in another job/command.
